@@ -44,8 +44,11 @@ I created my smart apartment with two things in mind:
 ## Mobile Dashboard
 Below is the dashboard as viewed on mobile devices:
 
+From start:
 ![Mobile Dashboard1](images/mobile1.jpg)
-![Mobile Dashboard1](images/mobile1.jpg)
+
+Include end:
+![Mobile Dashboard1](images/mobile2.jpg)
 
 When a room card is clicked, the user can see the **30-hour temperature, humidity, and pressure history** for that room.
 ![Mobile Dashboard1](images/subtab-balcony.jpg)

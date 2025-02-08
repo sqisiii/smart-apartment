@@ -1,0 +1,840 @@
+[
+	{
+		"id": "7170c5e7.818164",
+		"type": "tab",
+		"label": "Home",
+		"disabled": false,
+		"info": ""
+	},
+	{
+		"id": "74d9abe.65dc5d4",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Store LR switches state",
+		"server": "a6788102.94059",
+		"version": 5,
+		"debugenabled": true,
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [],
+		"data": "{\"scene_id\":\"living_room_current_state\",\"snapshot_entities\":\"switch.switch01_1, switch.switch01_2, switch.switch03_1, switch.switch03_2, switch.switch04_1, switch.switch04_2\"}",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"domain": "scene",
+		"service": "create",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 1090,
+		"y": 120,
+		"wires": [
+			[
+				"31fc97aa.e2723"
+			]
+		]
+	},
+	{
+		"id": "aa0fe4ed.62adc",
+		"type": "server-state-changed",
+		"z": "7170c5e7.818164",
+		"name": "table_button_pressed",
+		"server": "a6788102.94059",
+		"version": 1,
+		"outputs": 2,
+		"for": "",
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"exposeToHomeAssistant": false,
+		"haConfig": [
+			{
+				"property": "name",
+				"value": ""
+			},
+			{
+				"property": "icon",
+				"value": ""
+			}
+		],
+		"entityidfilter": "binary_sensor.lv_toggle_lights",
+		"entityidfiltertype": "exact",
+		"outputinitially": false,
+		"state_type": "str",
+		"haltifstate": "on",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"output_only_on_state_change": true,
+		"x": 120,
+		"y": 160,
+		"wires": [
+			[
+				"a612d486.283b88"
+			],
+			[]
+		]
+	},
+	{
+		"id": "a612d486.283b88",
+		"type": "function",
+		"z": "7170c5e7.818164",
+		"name": "State of the lights",
+		"func": "const globalHomeAssistant = global.get('homeassistant');\n\nvar switch01_1 = globalHomeAssistant.homeAssistant.states[\"switch.switch01_1\"].state;\nvar switch01_2 = globalHomeAssistant.homeAssistant.states[\"switch.switch01_2\"].state;\nvar switch03_1 = globalHomeAssistant.homeAssistant.states[\"switch.switch03_1\"].state;\nvar switch03_2 = globalHomeAssistant.homeAssistant.states[\"switch.switch03_2\"].state;\nvar switch04_1 = globalHomeAssistant.homeAssistant.states[\"switch.switch04_1\"].state;\nvar switch04_2 = globalHomeAssistant.homeAssistant.states[\"switch.switch04_2\"].state;\n\nif (switch01_1 == 'on' || switch01_2 == 'on' || switch03_1 == 'on' || switch03_2 == 'on' || switch04_1 == 'on' || switch04_2 == 'on')\n    msg.payload = 'on'\nelse\n    msg.payload = 'off'\n\nreturn msg;",
+		"outputs": 1,
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 390,
+		"y": 160,
+		"wires": [
+			[
+				"e8c81d0c.d2efc8"
+			]
+		]
+	},
+	{
+		"id": "cba5219c.12e05",
+		"type": "switch",
+		"z": "7170c5e7.818164",
+		"name": "",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "on",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "off",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 2,
+		"x": 730,
+		"y": 160,
+		"wires": [
+			[
+				"be277c58.c6e58"
+			],
+			[
+				"273dfd81.7bd0e2"
+			]
+		]
+	},
+	{
+		"id": "31fc97aa.e2723",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Turn off all LR switches",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": true,
+		"entityId": "scene.turn_off_all_lr_switches",
+		"data": "{}",
+		"dataType": "json",
+		"mustacheAltTags": false,
+		"service": "turn_on",
+		"output_location": "payload",
+		"output_location_type": "msg",
+		"service_domain": "scene",
+		"mergecontext": "",
+		"x": 1330,
+		"y": 120,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "2752046c.d15974",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Restore Living Room lights",
+		"server": "a6788102.94059",
+		"version": 5,
+		"debugenabled": false,
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"scene.living_room_current_state"
+		],
+		"data": "",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"domain": "scene",
+		"service": "turn_on",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 1100,
+		"y": 200,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "e8c81d0c.d2efc8",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": false,
+		"entityId": "",
+		"data": "{\"name\":\"Salon\",\"message\":\"Przycisk wciśnięty\",\"domain\":\"light\"}",
+		"dataType": "json",
+		"mustacheAltTags": false,
+		"service": "log",
+		"output_location": "",
+		"output_location_type": "none",
+		"service_domain": "logbook",
+		"mergecontext": "",
+		"x": 580,
+		"y": 160,
+		"wires": [
+			[
+				"cba5219c.12e05"
+			]
+		]
+	},
+	{
+		"id": "be277c58.c6e58",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": false,
+		"entityId": "",
+		"data": "{\"name\":\"Salon\",\"message\":\"Zapisz obecny stan\",\"domain\":\"light\"}",
+		"dataType": "json",
+		"mustacheAltTags": false,
+		"service": "log",
+		"output_location": "",
+		"output_location_type": "none",
+		"service_domain": "logbook",
+		"mergecontext": "",
+		"x": 880,
+		"y": 120,
+		"wires": [
+			[
+				"74d9abe.65dc5d4"
+			]
+		]
+	},
+	{
+		"id": "273dfd81.7bd0e2",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": false,
+		"entityId": "",
+		"data": "{\"name\":\"Salon\",\"message\":\"Przywrócony poprzedni stan\",\"domain\":\"light\"}",
+		"dataType": "json",
+		"mustacheAltTags": false,
+		"service": "log",
+		"output_location": "",
+		"output_location_type": "none",
+		"service_domain": "logbook",
+		"mergecontext": "",
+		"x": 880,
+		"y": 200,
+		"wires": [
+			[
+				"2752046c.d15974"
+			]
+		]
+	},
+	{
+		"id": "9db75958.adf538",
+		"type": "switch",
+		"z": "7170c5e7.818164",
+		"name": "balcony_button",
+		"property": "payload.action",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "double",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "triple",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "single",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 3,
+		"x": 320,
+		"y": 440,
+		"wires": [
+			[
+				"4e4488cbfe239a87"
+			],
+			[
+				"82fb5f8b91ca1661"
+			],
+			[
+				"8b1af4c1cc225282"
+			]
+		]
+	},
+	{
+		"id": "9206af50.eae95",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Toggle Balcony Light",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "switch.toggle",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.shelly01"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "switch",
+		"service": "toggle",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 900,
+		"y": 480,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "b3ac2b39.c8e07",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Toggle TV LEDs",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "switch.toggle",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.switch04_1"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "switch",
+		"service": "toggle",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 880,
+		"y": 360,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "ff74f3b8.47dc28",
+		"type": "server-state-changed",
+		"z": "7170c5e7.818164",
+		"name": "fan1_turn_off",
+		"server": "a6788102.94059",
+		"version": 1,
+		"outputs": 2,
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"exposeToHomeAssistant": false,
+		"haConfig": [
+			{
+				"property": "name",
+				"value": ""
+			},
+			{
+				"property": "icon",
+				"value": ""
+			}
+		],
+		"entityidfilter": "switch.switch02_1",
+		"entityidfiltertype": "exact",
+		"outputinitially": false,
+		"state_type": "str",
+		"haltifstate": "off",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"output_only_on_state_change": true,
+		"x": 110,
+		"y": 600,
+		"wires": [
+			[
+				"cdee0d80.5d017"
+			],
+			[]
+		]
+	},
+	{
+		"id": "cdee0d80.5d017",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "fan2 turn off",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": false,
+		"entityId": "switch.switch02_2",
+		"data": "",
+		"dataType": "json",
+		"mustacheAltTags": false,
+		"service": "turn_off",
+		"output_location": "",
+		"output_location_type": "none",
+		"service_domain": "switch",
+		"mergecontext": "",
+		"x": 270,
+		"y": 600,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "e7d26281.e4c078",
+		"type": "server-state-changed",
+		"z": "7170c5e7.818164",
+		"name": "fan2_turn_on",
+		"server": "a6788102.94059",
+		"version": 1,
+		"outputs": 2,
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"exposeToHomeAssistant": false,
+		"haConfig": [
+			{
+				"property": "name",
+				"value": ""
+			},
+			{
+				"property": "icon",
+				"value": ""
+			}
+		],
+		"entityidfilter": "switch.switch02_2",
+		"entityidfiltertype": "exact",
+		"outputinitially": false,
+		"state_type": "str",
+		"haltifstate": "on",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"output_only_on_state_change": true,
+		"x": 110,
+		"y": 660,
+		"wires": [
+			[
+				"d57dd511.5b7d58"
+			],
+			[]
+		]
+	},
+	{
+		"id": "d57dd511.5b7d58",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "fan1 turn on",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": false,
+		"entityId": "switch.switch02_1",
+		"data": "",
+		"dataType": "json",
+		"mustacheAltTags": false,
+		"service": "turn_on",
+		"output_location": "",
+		"output_location_type": "none",
+		"service_domain": "switch",
+		"mergecontext": "",
+		"x": 270,
+		"y": 660,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "75d38acc.736e8c",
+		"type": "switch",
+		"z": "7170c5e7.818164",
+		"name": "salon_button",
+		"property": "payload.action",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "single",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "hold",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "double",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "triple",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 4,
+		"x": 310,
+		"y": 320,
+		"wires": [
+			[
+				"a77b809e07b323b0"
+			],
+			[
+				"28cee8a6543393fe"
+			],
+			[
+				"4e4488cbfe239a87"
+			],
+			[
+				"82fb5f8b91ca1661"
+			]
+		]
+	},
+	{
+		"id": "de8accd5.771498",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Toggle Kitchen LEDs",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "switch.toggle",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.switch01_2"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "switch",
+		"service": "toggle",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 900,
+		"y": 420,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "34d4f0de96f1a4f5",
+		"type": "mqtt in",
+		"z": "7170c5e7.818164",
+		"name": "Living room button",
+		"topic": "zigbee2mqtt/btn-aqara-living-room",
+		"qos": "2",
+		"datatype": "auto-detect",
+		"broker": "7e3aa0c2d39a9bb3",
+		"nl": false,
+		"rap": true,
+		"rh": 0,
+		"inputs": 0,
+		"x": 110,
+		"y": 320,
+		"wires": [
+			[
+				"75d38acc.736e8c"
+			]
+		]
+	},
+	{
+		"id": "82fb5f8b91ca1661",
+		"type": "change",
+		"z": "7170c5e7.818164",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 560,
+		"y": 420,
+		"wires": [
+			[
+				"de8accd5.771498"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "a77b809e07b323b0",
+		"type": "change",
+		"z": "7170c5e7.818164",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 200,
+		"y": 220,
+		"wires": [
+			[
+				"a612d486.283b88"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "4e4488cbfe239a87",
+		"type": "change",
+		"z": "7170c5e7.818164",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 560,
+		"y": 360,
+		"wires": [
+			[
+				"b3ac2b39.c8e07"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "6283e00aa087ac05",
+		"type": "api-call-service",
+		"z": "7170c5e7.818164",
+		"name": "Toggle Living Room Lights",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "switch.toggle",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.switch03_1"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "switch",
+		"service": "toggle",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 920,
+		"y": 300,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "28cee8a6543393fe",
+		"type": "change",
+		"z": "7170c5e7.818164",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 560,
+		"y": 300,
+		"wires": [
+			[
+				"6283e00aa087ac05"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "1fdd52b0f9f55c3b",
+		"type": "mqtt in",
+		"z": "7170c5e7.818164",
+		"name": "Balcony button",
+		"topic": "zigbee2mqtt/btn-aqara-balcony",
+		"qos": "2",
+		"datatype": "auto-detect",
+		"broker": "7e3aa0c2d39a9bb3",
+		"nl": false,
+		"rap": true,
+		"rh": 0,
+		"inputs": 0,
+		"x": 100,
+		"y": 440,
+		"wires": [
+			[
+				"9db75958.adf538"
+			]
+		]
+	},
+	{
+		"id": "8b1af4c1cc225282",
+		"type": "change",
+		"z": "7170c5e7.818164",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 560,
+		"y": 460,
+		"wires": [
+			[
+				"9206af50.eae95"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "a6788102.94059",
+		"type": "server",
+		"name": "Home Assistant",
+		"addon": true,
+		"rejectUnauthorizedCerts": true,
+		"ha_boolean": "y|yes|true|on|home|open",
+		"connectionDelay": true,
+		"cacheJson": true
+	},
+	{
+		"id": "7e3aa0c2d39a9bb3",
+		"type": "mqtt-broker",
+		"name": "Zigbee2MQTT Broker",
+		"broker": "192.168.173.110",
+		"port": 1883,
+		"clientid": "",
+		"autoConnect": true,
+		"usetls": false,
+		"protocolVersion": 4,
+		"keepalive": 60,
+		"cleansession": true,
+		"autoUnsubscribe": true,
+		"birthTopic": "",
+		"birthQos": "0",
+		"birthRetain": "false",
+		"birthPayload": "",
+		"birthMsg": {},
+		"closeTopic": "",
+		"closeQos": "0",
+		"closeRetain": "false",
+		"closePayload": "",
+		"closeMsg": {},
+		"willTopic": "",
+		"willQos": "0",
+		"willRetain": "false",
+		"willPayload": "",
+		"willMsg": {},
+		"userProps": "",
+		"sessionExpiry": ""
+	}
+]

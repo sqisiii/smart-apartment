@@ -1,0 +1,1304 @@
+[
+	{
+		"id": "37c51c7b.69287c",
+		"type": "tab",
+		"label": "Alarm",
+		"disabled": false,
+		"info": ""
+	},
+	{
+		"id": "bd676a64.102f3",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Disarm",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "alarm_control_panel.alarm_disarm",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"alarm_control_panel.alarm"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "json",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "alarm_control_panel",
+		"service": "alarm_disarm",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 640,
+		"y": 400,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "2893f7e7.e63d58",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Arm Away",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "alarm_control_panel.alarm_arm_away",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"alarm_control_panel.alarm"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "jsonata",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "alarm_control_panel",
+		"service": "alarm_arm_away",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 630,
+		"y": 500,
+		"wires": [
+			[
+				"4d9f70e1.43e9d8"
+			]
+		]
+	},
+	{
+		"id": "496c8d04.6170b4",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Trigger",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "alarm_control_panel.alarm_trigger",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"alarm_control_panel.alarm"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "jsonata",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "data"
+			}
+		],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "alarm_control_panel",
+		"service": "alarm_trigger",
+		"output_location": "payload",
+		"output_location_type": "msg",
+		"x": 320,
+		"y": 40,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "892eb6f.31b1fc8",
+		"type": "server-state-changed",
+		"z": "37c51c7b.69287c",
+		"name": "Alarm panel state changed",
+		"server": "a6788102.94059",
+		"version": 6,
+		"outputs": 1,
+		"exposeAsEntityConfig": "",
+		"entities": {
+			"entity": [
+				"alarm_control_panel.alarm"
+			],
+			"substring": [],
+			"regex": []
+		},
+		"outputInitially": false,
+		"stateType": "str",
+		"ifState": "",
+		"ifStateType": "str",
+		"ifStateOperator": "is",
+		"outputOnlyOnStateChange": true,
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "eventData"
+			},
+			{
+				"property": "topic",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "triggerId"
+			}
+		],
+		"x": 130,
+		"y": 280,
+		"wires": [
+			[
+				"cb6a1ce9.389af8"
+			]
+		]
+	},
+	{
+		"id": "cb6a1ce9.389af8",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "which state?",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "disarmed",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "armed_home",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "triggered",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "armed_away",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "arming",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 5,
+		"x": 330,
+		"y": 280,
+		"wires": [
+			[
+				"10634ba0.ede2b4",
+				"428c93ad.b5256c",
+				"3239b7ac.37e708"
+			],
+			[
+				"cc26f98b.cc7fb"
+			],
+			[],
+			[
+				"cc26f98b.cc7fb"
+			],
+			[
+				"c1f178dd.c94da"
+			]
+		]
+	},
+	{
+		"id": "810fd6d4.f4c19",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Arm Home",
+		"server": "a6788102.94059",
+		"version": 1,
+		"debugenabled": false,
+		"entityId": "alarm_control_panel.alarm",
+		"data": "",
+		"dataType": "jsonata",
+		"mustacheAltTags": false,
+		"service": "alarm_arm_home",
+		"output_location": "",
+		"output_location_type": "none",
+		"service_domain": "alarm_control_panel",
+		"mergecontext": "",
+		"x": 630,
+		"y": 560,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "accebfc0.7daa08",
+		"type": "server-state-changed",
+		"z": "37c51c7b.69287c",
+		"name": "Motion in the hall",
+		"server": "a6788102.94059",
+		"version": 6,
+		"outputs": 2,
+		"exposeAsEntityConfig": "",
+		"entities": {
+			"entity": [
+				"binary_sensor.0x00158d00064010e8_occupancy"
+			],
+			"substring": [],
+			"regex": []
+		},
+		"outputInitially": false,
+		"stateType": "str",
+		"ifState": "on",
+		"ifStateType": "str",
+		"ifStateOperator": "is",
+		"outputOnlyOnStateChange": true,
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "eventData"
+			},
+			{
+				"property": "topic",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "triggerId"
+			}
+		],
+		"x": 100,
+		"y": 100,
+		"wires": [
+			[
+				"496c8d04.6170b4",
+				"cdcda0b3.418c2"
+			],
+			[]
+		]
+	},
+	{
+		"id": "1b98776e.99bc91",
+		"type": "server-state-changed",
+		"z": "37c51c7b.69287c",
+		"name": "Balcony door opens",
+		"server": "a6788102.94059",
+		"version": 6,
+		"outputs": 2,
+		"exposeAsEntityConfig": "",
+		"entities": {
+			"entity": [
+				"binary_sensor.0x00158d0002a6e6ec_contact"
+			],
+			"substring": [],
+			"regex": []
+		},
+		"outputInitially": false,
+		"stateType": "str",
+		"ifState": "on",
+		"ifStateType": "str",
+		"ifStateOperator": "is",
+		"outputOnlyOnStateChange": true,
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "eventData"
+			},
+			{
+				"property": "topic",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "triggerId"
+			}
+		],
+		"x": 110,
+		"y": 160,
+		"wires": [
+			[
+				"496c8d04.6170b4",
+				"440effe8.dd9c18"
+			],
+			[]
+		]
+	},
+	{
+		"id": "10634ba0.ede2b4",
+		"type": "trigger",
+		"z": "37c51c7b.69287c",
+		"name": "Send balcony door opened",
+		"op1": "",
+		"op2": "Drzwi balkonowe zostały otwarte.",
+		"op1type": "nul",
+		"op2type": "str",
+		"duration": "15",
+		"extend": false,
+		"overrideDelay": false,
+		"units": "s",
+		"reset": "disarmed",
+		"bytopic": "all",
+		"topic": "topic",
+		"outputs": 1,
+		"x": 780,
+		"y": 180,
+		"wires": [
+			[
+				"dea94b0ed50d6268"
+			]
+		]
+	},
+	{
+		"id": "428c93ad.b5256c",
+		"type": "trigger",
+		"z": "37c51c7b.69287c",
+		"name": "Send motion in the hall detected",
+		"op1": "",
+		"op2": "{\"payload\":\"Alarm rozbrojony\",\"channel\":\"830232019678003200\"}",
+		"op1type": "nul",
+		"op2type": "json",
+		"duration": "15",
+		"extend": false,
+		"overrideDelay": false,
+		"units": "s",
+		"reset": "disarmed",
+		"bytopic": "all",
+		"topic": "topic",
+		"outputs": 1,
+		"x": 790,
+		"y": 100,
+		"wires": [
+			[
+				"90caa755f52c98a4"
+			]
+		]
+	},
+	{
+		"id": "440effe8.dd9c18",
+		"type": "api-current-state",
+		"z": "37c51c7b.69287c",
+		"name": "Alarm panel state",
+		"server": "a6788102.94059",
+		"version": 3,
+		"outputs": 1,
+		"halt_if": "",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"entity_id": "alarm_control_panel.alarm",
+		"state_type": "str",
+		"blockInputOverrides": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entity"
+			}
+		],
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"x": 330,
+		"y": 160,
+		"wires": [
+			[
+				"1cb6c2d2.df66b5"
+			]
+		]
+	},
+	{
+		"id": "1cb6c2d2.df66b5",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "Panel armed?",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "armed_away",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "armed_home",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 2,
+		"x": 520,
+		"y": 160,
+		"wires": [
+			[
+				"10634ba0.ede2b4"
+			],
+			[
+				"10634ba0.ede2b4"
+			]
+		]
+	},
+	{
+		"id": "cdcda0b3.418c2",
+		"type": "api-current-state",
+		"z": "37c51c7b.69287c",
+		"name": "Alarm panel state",
+		"server": "a6788102.94059",
+		"version": 3,
+		"outputs": 1,
+		"halt_if": "",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"entity_id": "alarm_control_panel.alarm",
+		"state_type": "str",
+		"blockInputOverrides": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entity"
+			}
+		],
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"x": 330,
+		"y": 100,
+		"wires": [
+			[
+				"f2a02206.ec7e9"
+			]
+		]
+	},
+	{
+		"id": "f2a02206.ec7e9",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "Panel armed?",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "armed_away",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "armed_home",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 2,
+		"x": 520,
+		"y": 100,
+		"wires": [
+			[
+				"428c93ad.b5256c"
+			],
+			[
+				"428c93ad.b5256c"
+			]
+		]
+	},
+	{
+		"id": "c1f178dd.c94da",
+		"type": "api-current-state",
+		"z": "37c51c7b.69287c",
+		"name": "Balcony door state",
+		"server": "a6788102.94059",
+		"version": 3,
+		"outputs": 1,
+		"halt_if": "",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"entity_id": "binary_sensor.0x00158d0002a6e6ec_contact",
+		"state_type": "str",
+		"blockInputOverrides": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entity"
+			}
+		],
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"x": 530,
+		"y": 340,
+		"wires": [
+			[
+				"f96c4423.e4df58"
+			]
+		]
+	},
+	{
+		"id": "f96c4423.e4df58",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "Door opened?",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "on",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 1,
+		"x": 720,
+		"y": 340,
+		"wires": [
+			[
+				"f694307.d565f5",
+				"fbf3641a.6000f"
+			]
+		]
+	},
+	{
+		"id": "f694307.d565f5",
+		"type": "function",
+		"z": "37c51c7b.69287c",
+		"name": "Send balcony doors are opened",
+		"func": "msg.payload = \"Drzwi balkonowe są otwarte\";\nmsg.topic = \"Home Assistant Alarm - drzwi balkonowe otwarte\"\nreturn msg;",
+		"outputs": 1,
+		"timeout": "",
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1010,
+		"y": 340,
+		"wires": [
+			[
+				"a4090fe52577db16"
+			]
+		]
+	},
+	{
+		"id": "cc26f98b.cc7fb",
+		"type": "function",
+		"z": "37c51c7b.69287c",
+		"name": "Send alarm armed",
+		"func": "msg.payload = \"Alarm uzbrojony\";\nmsg.topic = \"Home Assistant Alarm - alarm uzbrojony\"\nreturn msg;",
+		"outputs": 1,
+		"timeout": "",
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1030,
+		"y": 280,
+		"wires": [
+			[
+				"a4090fe52577db16"
+			]
+		]
+	},
+	{
+		"id": "3239b7ac.37e708",
+		"type": "function",
+		"z": "37c51c7b.69287c",
+		"name": "Send alarm disarmed",
+		"func": "msg.payload = \"Alarm rozbrojony\";\nmsg.topic = \"Home Assistant Alarm - alarm rozbrojony\"\nreturn msg;",
+		"outputs": 1,
+		"timeout": "",
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1020,
+		"y": 220,
+		"wires": [
+			[
+				"a4090fe52577db16"
+			]
+		]
+	},
+	{
+		"id": "fbf3641a.6000f",
+		"type": "trigger",
+		"z": "37c51c7b.69287c",
+		"name": "Wait 1 second",
+		"op1": "",
+		"op2": "0",
+		"op1type": "nul",
+		"op2type": "str",
+		"duration": "1",
+		"extend": false,
+		"overrideDelay": false,
+		"units": "s",
+		"reset": "",
+		"bytopic": "all",
+		"topic": "topic",
+		"outputs": 1,
+		"x": 820,
+		"y": 400,
+		"wires": [
+			[
+				"bd676a64.102f3"
+			]
+		]
+	},
+	{
+		"id": "3d5da0c0.44466",
+		"type": "light-scheduler",
+		"z": "37c51c7b.69287c",
+		"settings": "13a795b9.a89fca",
+		"events": "[{\"start\":{\"dow\":1,\"mod\":1175},\"end\":{\"dow\":1,\"mod\":1180}},{\"start\":{\"dow\":1,\"mod\":1295},\"end\":{\"dow\":1,\"mod\":1300}},{\"start\":{\"dow\":2,\"mod\":1355},\"end\":{\"dow\":2,\"mod\":1365}},{\"start\":{\"dow\":2,\"mod\":1235},\"end\":{\"dow\":2,\"mod\":1245}},{\"start\":{\"dow\":1,\"mod\":1405},\"end\":{\"dow\":1,\"mod\":1410}},{\"start\":{\"dow\":3,\"mod\":1210},\"end\":{\"dow\":3,\"mod\":1215}},{\"start\":{\"dow\":3,\"mod\":1260},\"end\":{\"dow\":3,\"mod\":1270}},{\"start\":{\"dow\":3,\"mod\":1315},\"end\":{\"dow\":3,\"mod\":1325}},{\"start\":{\"dow\":4,\"mod\":1210},\"end\":{\"dow\":4,\"mod\":1220}},{\"start\":{\"dow\":4,\"mod\":1330},\"end\":{\"dow\":4,\"mod\":1340}},{\"start\":{\"dow\":5,\"mod\":1180},\"end\":{\"dow\":5,\"mod\":1190}},{\"start\":{\"dow\":6,\"mod\":1235},\"end\":{\"dow\":6,\"mod\":1245}},{\"start\":{\"dow\":5,\"mod\":1295},\"end\":{\"dow\":5,\"mod\":1305}},{\"start\":{\"dow\":0,\"mod\":1200},\"end\":{\"dow\":0,\"mod\":1210}},{\"start\":{\"dow\":0,\"mod\":1285},\"end\":{\"dow\":0,\"mod\":1295}},{\"start\":{\"dow\":0,\"mod\":1360},\"end\":{\"dow\":0,\"mod\":1370}},{\"start\":{\"dow\":6,\"mod\":1405},\"end\":{\"dow\":6,\"mod\":1415}}]",
+		"topic": "",
+		"name": "Change lights when armed",
+		"onPayload": "ON",
+		"onPayloadType": "str",
+		"offPayload": "OFF",
+		"offPayloadType": "str",
+		"onlyWhenDark": true,
+		"scheduleRndMax": "1",
+		"sunElevationThreshold": "0",
+		"sunShowElevationInStatus": true,
+		"outputfreq": "output.minutely",
+		"x": 140,
+		"y": 660,
+		"wires": [
+			[
+				"5fcb1863.43e218"
+			]
+		]
+	},
+	{
+		"id": "35db574b.31adc8",
+		"type": "api-current-state",
+		"z": "37c51c7b.69287c",
+		"name": "Alarm panel state",
+		"server": "a6788102.94059",
+		"version": 3,
+		"outputs": 1,
+		"halt_if": "",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"entity_id": "alarm_control_panel.alarm",
+		"state_type": "str",
+		"blockInputOverrides": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entity"
+			}
+		],
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"x": 530,
+		"y": 620,
+		"wires": [
+			[
+				"56414273.8812cc"
+			]
+		]
+	},
+	{
+		"id": "56414273.8812cc",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "Panel armed?",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "armed_away",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "armed_home",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 2,
+		"x": 760,
+		"y": 620,
+		"wires": [
+			[
+				"e5f1c455.5924a"
+			],
+			[
+				"e5f1c455.5924a"
+			]
+		]
+	},
+	{
+		"id": "5fcb1863.43e218",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "ON",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "OFF",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 2,
+		"x": 350,
+		"y": 660,
+		"wires": [
+			[
+				"35db574b.31adc8"
+			],
+			[
+				"c42f16d7.d80b68"
+			]
+		]
+	},
+	{
+		"id": "e5f1c455.5924a",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Living room light on",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "switch.turn_on",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.switch03_2"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "jsonata",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "switch",
+		"service": "turn_on",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 970,
+		"y": 620,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "c42f16d7.d80b68",
+		"type": "api-current-state",
+		"z": "37c51c7b.69287c",
+		"name": "Alarm panel state",
+		"server": "a6788102.94059",
+		"version": 1,
+		"outputs": 1,
+		"halt_if": "",
+		"halt_if_type": "str",
+		"halt_if_compare": "is",
+		"entity_id": "alarm_control_panel.alarm",
+		"state_type": "str",
+		"blockInputOverrides": false,
+		"override_topic": false,
+		"state_location": "payload",
+		"override_payload": "msg",
+		"entity_location": "data",
+		"override_data": "msg",
+		"x": 530,
+		"y": 680,
+		"wires": [
+			[
+				"7c31822d.596844"
+			]
+		]
+	},
+	{
+		"id": "7c31822d.596844",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "Panel armed?",
+		"property": "payload",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "armed_away",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "armed_home",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 2,
+		"x": 760,
+		"y": 680,
+		"wires": [
+			[
+				"a1119504.bc9178"
+			],
+			[
+				"a1119504.bc9178"
+			]
+		]
+	},
+	{
+		"id": "a1119504.bc9178",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Living room light off",
+		"server": "a6788102.94059",
+		"version": 5,
+		"debugenabled": false,
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.switch03_2"
+		],
+		"data": "",
+		"dataType": "jsonata",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"domain": "switch",
+		"service": "turn_off",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 970,
+		"y": 680,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "64a4bde3.879a94",
+		"type": "server-state-changed",
+		"z": "37c51c7b.69287c",
+		"name": "water leak detected",
+		"server": "a6788102.94059",
+		"version": 6,
+		"outputs": 2,
+		"exposeAsEntityConfig": "",
+		"entities": {
+			"entity": [
+				"binary_sensor.0x00158d000578d851_water_leak"
+			],
+			"substring": [],
+			"regex": []
+		},
+		"outputInitially": false,
+		"stateType": "str",
+		"ifState": "on",
+		"ifStateType": "str",
+		"ifStateOperator": "is",
+		"outputOnlyOnStateChange": true,
+		"for": 0,
+		"forType": "num",
+		"forUnits": "minutes",
+		"ignorePrevStateNull": false,
+		"ignorePrevStateUnknown": false,
+		"ignorePrevStateUnavailable": false,
+		"ignoreCurrentStateUnknown": false,
+		"ignoreCurrentStateUnavailable": false,
+		"outputProperties": [
+			{
+				"property": "payload",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "entityState"
+			},
+			{
+				"property": "data",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "eventData"
+			},
+			{
+				"property": "topic",
+				"propertyType": "msg",
+				"value": "",
+				"valueType": "triggerId"
+			}
+		],
+		"x": 550,
+		"y": 40,
+		"wires": [
+			[
+				"4348b3b6.11b37c"
+			],
+			[]
+		]
+	},
+	{
+		"id": "4348b3b6.11b37c",
+		"type": "function",
+		"z": "37c51c7b.69287c",
+		"name": "Send water leak",
+		"func": "msg.payload = \"Wykryto wilgoć pod zlewozmywakiem\";\nmsg.topic = \"Home Assistant Alarm - wilgoć\"\nreturn msg;",
+		"outputs": 1,
+		"timeout": "",
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1040,
+		"y": 40,
+		"wires": [
+			[
+				"a4090fe52577db16"
+			]
+		]
+	},
+	{
+		"id": "4d9f70e1.43e9d8",
+		"type": "api-call-service",
+		"z": "37c51c7b.69287c",
+		"name": "Balcony light off",
+		"server": "a6788102.94059",
+		"version": 7,
+		"debugenabled": false,
+		"action": "switch.turn_off",
+		"floorId": [],
+		"areaId": [],
+		"deviceId": [],
+		"entityId": [
+			"switch.shelly01"
+		],
+		"labelId": [],
+		"data": "",
+		"dataType": "jsonata",
+		"mergeContext": "",
+		"mustacheAltTags": false,
+		"outputProperties": [],
+		"queue": "none",
+		"blockInputOverrides": false,
+		"domain": "switch",
+		"service": "turn_off",
+		"output_location": "",
+		"output_location_type": "none",
+		"x": 880,
+		"y": 500,
+		"wires": [
+			[]
+		]
+	},
+	{
+		"id": "90caa755f52c98a4",
+		"type": "function",
+		"z": "37c51c7b.69287c",
+		"name": "Send motion detected",
+		"func": "msg.payload = \"Ruch w przedpokoju\";\nmsg.topic = \"Home Assistant Alarm - ruch\"\nreturn msg;",
+		"outputs": 1,
+		"timeout": "",
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1040,
+		"y": 100,
+		"wires": [
+			[
+				"a4090fe52577db16"
+			]
+		]
+	},
+	{
+		"id": "dea94b0ed50d6268",
+		"type": "function",
+		"z": "37c51c7b.69287c",
+		"name": "Send doors opens",
+		"func": "msg.payload = \"Otwarto drzwi balkonowe w salonie\";\nmsg.topic = \"Home Assistant Alarm - balkon\";\nreturn msg;",
+		"outputs": 1,
+		"timeout": "",
+		"noerr": 0,
+		"initialize": "",
+		"finalize": "",
+		"libs": [],
+		"x": 1030,
+		"y": 160,
+		"wires": [
+			[
+				"a4090fe52577db16"
+			]
+		]
+	},
+	{
+		"id": "3be8d710d43f5a6a",
+		"type": "mqtt in",
+		"z": "37c51c7b.69287c",
+		"name": "Hall button",
+		"topic": "zigbee2mqtt/btn-aqara-hall",
+		"qos": "2",
+		"datatype": "auto-detect",
+		"broker": "7e3aa0c2d39a9bb3",
+		"nl": false,
+		"rap": true,
+		"rh": 0,
+		"inputs": 0,
+		"x": 80,
+		"y": 460,
+		"wires": [
+			[
+				"509a55ebbe7ab121"
+			]
+		]
+	},
+	{
+		"id": "509a55ebbe7ab121",
+		"type": "switch",
+		"z": "37c51c7b.69287c",
+		"name": "action type",
+		"property": "payload.action",
+		"propertyType": "msg",
+		"rules": [
+			{
+				"t": "eq",
+				"v": "triple",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "double",
+				"vt": "str"
+			},
+			{
+				"t": "eq",
+				"v": "single",
+				"vt": "str"
+			}
+		],
+		"checkall": "true",
+		"repair": false,
+		"outputs": 3,
+		"x": 250,
+		"y": 460,
+		"wires": [
+			[
+				"78239f94a499e2b9"
+			],
+			[],
+			[
+				"3647ad7329f6f502"
+			]
+		]
+	},
+	{
+		"id": "78239f94a499e2b9",
+		"type": "change",
+		"z": "37c51c7b.69287c",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 440,
+		"y": 440,
+		"wires": [
+			[
+				"bd676a64.102f3"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "3647ad7329f6f502",
+		"type": "change",
+		"z": "37c51c7b.69287c",
+		"name": "Clear payload",
+		"rules": [
+			{
+				"t": "set",
+				"p": "payload",
+				"pt": "msg",
+				"to": "\"\"",
+				"tot": "str"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 440,
+		"y": 480,
+		"wires": [
+			[
+				"2893f7e7.e63d58"
+			]
+		],
+		"info": "Clears 'action' form payload as it causes issues."
+	},
+	{
+		"id": "a4090fe52577db16",
+		"type": "e-mail",
+		"z": "37c51c7b.69287c",
+		"server": "smtp.gmail.com",
+		"port": "465",
+		"authtype": "BASIC",
+		"saslformat": true,
+		"token": "oauth2Response.access_token",
+		"secure": true,
+		"tls": true,
+		"name": "xxx",
+		"dname": "GMail Notifications",
+		"x": 1270,
+		"y": 100,
+		"wires": []
+	},
+	{
+		"id": "a6788102.94059",
+		"type": "server",
+		"name": "Home Assistant",
+		"addon": true,
+		"rejectUnauthorizedCerts": true,
+		"ha_boolean": "y|yes|true|on|home|open",
+		"connectionDelay": true,
+		"cacheJson": true
+	},
+	{
+		"id": "13a795b9.a89fca",
+		"type": "light-scheduler-settings",
+		"name": "my settings",
+		"latitude": "54.4051098",
+		"longitude": "18.5766785"
+	},
+	{
+		"id": "7e3aa0c2d39a9bb3",
+		"type": "mqtt-broker",
+		"name": "Zigbee2MQTT Broker",
+		"broker": "192.168.173.110",
+		"port": 1883,
+		"clientid": "",
+		"autoConnect": true,
+		"usetls": false,
+		"protocolVersion": 4,
+		"keepalive": 60,
+		"cleansession": true,
+		"autoUnsubscribe": true,
+		"birthTopic": "",
+		"birthQos": "0",
+		"birthRetain": "false",
+		"birthPayload": "",
+		"birthMsg": {},
+		"closeTopic": "",
+		"closeQos": "0",
+		"closeRetain": "false",
+		"closePayload": "",
+		"closeMsg": {},
+		"willTopic": "",
+		"willQos": "0",
+		"willRetain": "false",
+		"willPayload": "",
+		"willMsg": {},
+		"userProps": "",
+		"sessionExpiry": ""
+	}
+]

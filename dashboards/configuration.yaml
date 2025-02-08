@@ -1,0 +1,55 @@
+default_config:
+
+tts:
+  - platform: google_translate
+
+sensor: !include_dir_merge_list sensors/
+binary_sensor: !include_dir_merge_list binary_sensors/
+switch: !include_dir_merge_list switches/
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+light: !include_dir_merge_list lights/
+notify: !include_dir_merge_list notifies/
+command_line: !include_dir_merge_list commands/
+
+mqtt:
+  switch: !include_dir_merge_list mqtt/switches/
+  light: !include_dir_merge_list mqtt/lights/
+  sensor: !include_dir_merge_list mqtt/sensors/
+  binary_sensor: !include_dir_merge_list mqtt/binary_sensors/
+
+homeassistant:
+  customize: !include customize.yaml
+
+python_script:
+frontend:
+  themes: !include_dir_merge_named themes/
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components.python_script: debug
+    homeassistant.components.automation: info
+    homeassistant.components.mqtt: debug
+
+media_player:
+  - platform: emby
+    host: 192.168.173.201
+    api_key: !secret emby_upcoming_media_api_key
+
+alarm_control_panel:
+  - platform: manual
+    name: Alarm
+    unique_id: home_alarm_panel
+    arming_time: 30
+    delay_time: 10
+    trigger_time: 10
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 0
+      delay_time: 0
+    code_arm_required: false
+    disarm_after_trigger: false

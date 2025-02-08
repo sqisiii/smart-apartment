@@ -1,0 +1,577 @@
+views:
+  - title: Status
+    cards:
+      - type: horizontal-stack
+        cards: []
+    badges: []
+    type: sections
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Bezpieczeństwo
+            heading_style: title
+          - type: custom:mushroom-alarm-control-panel-card
+            entity: alarm_control_panel.alarm
+            states: []
+            layout: horizontal
+            primary_info: name
+            secondary_info: state
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.0x00158d00064010e8_occupancy
+            fill_container: false
+            primary_info: state
+            secondary_info: last-changed
+            icon: mdi:motion-sensor
+          - type: custom:mushroom-entity-card
+            secondary_info: last-changed
+            entity: binary_sensor.0x00158d0002a6e6ec_contact
+            primary_info: state
+          - type: custom:mushroom-entity-card
+            entity: binary_sensor.0x00158d000578d851_water_leak
+            name: Pod zlewem
+      - type: grid
+        cards:
+          - type: heading
+            heading: Pomiary
+            heading_style: title
+          - type: custom:mushroom-template-card
+            primary: Gabinet
+            secondary: >-
+              {{states('sensor.ht_aqara_sensor_office1_temperature')+"°C"}} /
+              {{states('sensor.ht_aqara_sensor_office1_humidity')+"%"}}
+            icon: mdi:desk
+            grid_options:
+              rows: 1
+            tap_action:
+              action: navigate
+              navigation_path: office-ht
+          - type: custom:mushroom-template-card
+            primary: Salon
+            secondary: >-
+              {{states('sensor.ht_aqara_sensor_office1_temperature')+"°C"}} /
+              {{states('sensor.ht_aqara_sensor_office1_humidity')+"%"}}
+            icon: mdi:home
+          - type: custom:mushroom-template-card
+            primary: Łazienka
+            secondary: >-
+              {{states('sensor.ht_aqara_sensor_bathroom_temperature')+"°C"}} /
+              {{states('sensor.ht_aqara_sensor_bathroom_humidity')+"%"}}
+            icon: mdi:bathtub
+            badge_icon: ''
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-mushroom/lazienka-ht
+          - type: custom:mushroom-template-card
+            primary: WC
+            secondary: >-
+              {{states('sensor.ht_aqara_sensor_bathroom_temperature')+"°C"}} /
+              {{states('sensor.ht_aqara_sensor_bathroom_humidity')+"%"}}
+            icon: mdi:toilet
+          - type: custom:mushroom-template-card
+            primary: Sypialnia
+            secondary: >-
+              {{states('sensor.ht_aqara_sensor_bedroom_temperature')+"°C"}} /
+              {{states('sensor.ht_aqara_sensor_bedroom_humidity')+"%"}}
+            icon: mdi:bed
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-mushroom/sypialnia-ht
+          - type: custom:mushroom-template-card
+            primary: Balkon
+            secondary: >-
+              {{states('sensor.ht_aqara_sensor_balcony_temperature')+"°C"}} /
+              {{states('sensor.ht_aqara_sensor_balcony_humidity')+"%"}}
+            icon: mdi:calendar-account
+            tap_action:
+              action: navigate
+              navigation_path: /dashboard-mushroom/balkon-ht
+      - type: grid
+        cards:
+          - type: heading
+            heading: Wentylacja
+            heading_style: title
+          - type: custom:mushroom-template-card
+            primary: Tryb wolny
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch02_1','on') %}
+                mdi:fan-speed-1
+              {% else %}
+                mdi:fan-off
+              {% endif %}
+            icon_color: |-
+              {% if is_state('switch.switch02_1','on') %}
+                orange
+              {% endif %}
+            entity: switch.switch02_1
+          - type: custom:mushroom-template-card
+            primary: Tryb szybki
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch02_2','on') %}
+                mdi:fan-speed-2
+              {% else %}
+                mdi:fan-off
+              {% endif %}
+            entity: switch.switch02_2
+            icon_color: |-
+              {% if is_state('switch.switch02_2','on') %}
+                orange
+              {% endif %}
+          - type: custom:mushroom-number-card
+            entity: number.shellytrv_8cf681e9ac96_valve_position
+            primary_info: name
+            secondary_info: state
+            icon_type: icon
+            display_mode: slider
+            layout: horizontal
+            name: Grzejnik
+            fill_container: false
+            grid_options:
+              rows: 1
+              columns: 12
+            icon_color: dark-grey
+      - type: grid
+        cards:
+          - type: heading
+            heading: Światła
+            heading_style: title
+          - type: custom:mushroom-template-card
+            primary: Kuchnia Światło
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch01_1','on') %}
+                mdi:countertop
+              {% else %}
+                mdi:countertop-outline
+              {% endif %}
+            entity: switch.switch01_1
+            icon_color: |-
+              {% if is_state('switch.switch01_1','on') %}
+                orange
+              {% endif %}
+            layout: horizontal
+            grid_options:
+              columns: 6
+              rows: 1
+            tap_action:
+              action: toggle
+          - type: custom:mushroom-template-card
+            primary: Kuchnia LED
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch01_2','on') %}
+                mdi:tea
+              {% else %}
+                mdi:tea-outline
+              {% endif %}
+            entity: switch.switch01_2
+            tap_action:
+              action: toggle
+            icon_color: |-
+              {% if is_state('switch.switch01_2','on') %}
+                orange
+              {% endif %}
+          - type: custom:mushroom-template-card
+            primary: Salon Światło
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch03_1','on') %}
+                mdi:lightbulb-cfl
+              {% else %}
+                mdi:lightbulb-cfl-off
+              {% endif %}
+            entity: switch.switch03_1
+            icon_color: |-
+              {% if is_state('switch.switch03_1','on') %}
+                orange
+              {% endif %}
+          - type: custom:mushroom-template-card
+            primary: Salon LED
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch03_2','on') %}
+                mdi:led-on
+              {% else %}
+                mdi:led-off
+              {% endif %}
+            icon_color: |-
+              {% if is_state('switch.switch03_2','on') %}
+                orange
+              {% endif %}
+            entity: switch.switch03_2
+          - type: custom:mushroom-template-card
+            primary: Salon LED TV
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch04_1','on') %}
+                mdi:led-strip-variant
+              {% else %}
+                mdi:led-strip-variant-off
+              {% endif %}
+            entity: switch.switch04_1
+            icon_color: |-
+              {% if is_state('switch.switch04_1','on') %}
+                orange
+              {% endif %}
+          - type: custom:mushroom-template-card
+            primary: Salon Stół
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.switch04_2','on') %}
+                mdi:table-furniture
+              {% else %}
+                mdi:table-furniture
+              {% endif %}
+            entity: switch.switch04_2
+            icon_color: |-
+              {% if is_state('switch.switch04_2','on') %}
+                orange
+              {% endif %}
+          - type: custom:mushroom-template-card
+            primary: Balkon
+            secondary: ''
+            icon: |-
+              {% if is_state('switch.shelly01','on') %}
+                mdi:calendar-account
+              {% else %}
+                mdi:calendar-account-outline
+              {% endif %}
+            entity: switch.shelly01
+            icon_color: |-
+              {% if is_state('switch.shelly01','on') %}
+                orange
+              {% endif %}
+          - type: custom:mushroom-light-card
+            entity: light.shellydimmer01
+            use_light_color: false
+            show_brightness_control: true
+            layout: horizontal
+            show_color_temp_control: false
+            show_color_control: false
+            collapsible_controls: false
+            name: Sypialnia
+            grid_options:
+              columns: 6
+              rows: 1
+            primary_info: none
+            secondary_info: none
+            icon: mdi:bed
+            icon_type: icon
+          - type: conditional
+            conditions:
+              - condition: or
+                conditions:
+                  - condition: state
+                    entity: light.shellyrgbw2_01
+                    state: 'on'
+                  - condition: state
+                    entity: light.shellyrgbw2_01
+                    state: 'off'
+            card:
+              type: custom:mushroom-light-card
+              entity: light.shellyrgbw2_01
+              name: Gabinet
+              show_brightness_control: true
+              show_color_control: true
+              show_color_temp_control: true
+              use_light_color: true
+    max_columns: 4
+  - type: sections
+    path: office-ht
+    max_columns: 4
+    subview: true
+    title: Gabinet
+    sections:
+      - type: grid
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_office1_temperature
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 0
+                color: '#800080'
+              - value: 5
+                color: '#0000FF'
+              - value: 10
+                color: '#08000'
+              - value: 15
+                color: '#FFFF00'
+              - value: 20
+                color: '#FF6600'
+              - value: 25
+                color: '#FF0000'
+              - value: 30
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Wilgotność
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_office1_humidity
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 30
+                color: '#800080'
+              - value: 40
+                color: '#0000FF'
+              - value: 50
+                color: '#08000'
+              - value: 60
+                color: '#FFFF00'
+              - value: 70
+                color: '#FF6600'
+              - value: 80
+                color: '#FF0000'
+              - value: 90
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Ciśnienie
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_office1_pressure
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+    cards: []
+  - type: sections
+    max_columns: 4
+    subview: true
+    path: lazienka-ht
+    title: Łazienka
+    sections:
+      - type: grid
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_bathroom_temperature
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 0
+                color: '#800080'
+              - value: 5
+                color: '#0000FF'
+              - value: 10
+                color: '#08000'
+              - value: 15
+                color: '#FFFF00'
+              - value: 20
+                color: '#FF6600'
+              - value: 25
+                color: '#FF0000'
+              - value: 30
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Wilgotność
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_bathroom_humidity
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 30
+                color: '#800080'
+              - value: 40
+                color: '#0000FF'
+              - value: 50
+                color: '#08000'
+              - value: 60
+                color: '#FFFF00'
+              - value: 70
+                color: '#FF6600'
+              - value: 80
+                color: '#FF0000'
+              - value: 90
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Ciśnienie
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_bathroom_pressure
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+    cards: []
+  - type: sections
+    max_columns: 4
+    subview: true
+    path: sypialnia-ht
+    title: Sypialnia
+    sections:
+      - type: grid
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_bedroom_temperature
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 0
+                color: '#800080'
+              - value: 5
+                color: '#0000FF'
+              - value: 10
+                color: '#08000'
+              - value: 15
+                color: '#FFFF00'
+              - value: 20
+                color: '#FF6600'
+              - value: 25
+                color: '#FF0000'
+              - value: 30
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Wilgotność
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_bedroom_humidity
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 30
+                color: '#800080'
+              - value: 40
+                color: '#0000FF'
+              - value: 50
+                color: '#08000'
+              - value: 60
+                color: '#FFFF00'
+              - value: 70
+                color: '#FF6600'
+              - value: 80
+                color: '#FF0000'
+              - value: 90
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Ciśnienie
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_bedroom_pressure
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+  - type: sections
+    max_columns: 4
+    title: Balkon
+    path: balkon-ht
+    subview: true
+    sections:
+      - type: grid
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperatura
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_balcony_temperature
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 0
+                color: '#800080'
+              - value: 5
+                color: '#0000FF'
+              - value: 10
+                color: '#08000'
+              - value: 15
+                color: '#FFFF00'
+              - value: 20
+                color: '#FF6600'
+              - value: 25
+                color: '#FF0000'
+              - value: 30
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Wilgotność
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_balcony_humidity
+            line_color: blue
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
+            color_thresholds:
+              - value: 30
+                color: '#800080'
+              - value: 40
+                color: '#0000FF'
+              - value: 50
+                color: '#08000'
+              - value: 60
+                color: '#FFFF00'
+              - value: 70
+                color: '#FF6600'
+              - value: 80
+                color: '#FF0000'
+              - value: 90
+                color: '#FF69B4'
+          - type: custom:mini-graph-card
+            name: Ciśnienie
+            graph: line
+            font_size_header: 12
+            entities:
+              - sensor.ht_aqara_sensor_balcony_pressure
+            line_color: var(--accent-color)
+            line_width: 8
+            font_size: 75
+            hour24: true
+            hours_to_show: 30
+            points_per_hour: 1
